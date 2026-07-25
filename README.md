@@ -12,8 +12,6 @@ For runtime visibility, five AWS security data sources — GuardDuty, Security H
 
 ## Architecture
 
-![](screenshots/cloud-architecture.png)
-
 The pipeline flows left to right: a push to `main` triggers the CI workflow, which gates the container build, which gates deployment. Terraform changes trigger IaC scanning independently. Within AWS, the EKS cluster runs in private subnets behind a NAT Gateway, with a LoadBalancer Service exposing the application through public subnets. Security telemetry follows two paths into Splunk — GuardDuty and Security Hub route through EventBridge into CloudWatch Logs (polled by the Splunk Add-on), while CloudTrail logs land in S3 with SNS/SQS notifications enabling Splunk to pull new objects. The OTel Collector, deployed via Helm, pushes container stdout/stderr and Kubernetes events directly to Splunk's HEC endpoint.
 
 ## Tech Stack
